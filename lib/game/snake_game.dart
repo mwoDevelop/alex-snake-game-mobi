@@ -5,7 +5,6 @@ import 'package:alex_snake_flutter/game/food.dart';
 import 'package:alex_snake_flutter/game/grid.dart';
 import 'package:alex_snake_flutter/game/snake.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class SnakeGame extends StatefulWidget {
   const SnakeGame({super.key});
@@ -22,7 +21,6 @@ class _SnakeGameState extends State<SnakeGame> {
   bool isGameOver = false;
   int score = 0;
   Direction? nextDirection;
-  final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -47,7 +45,7 @@ class _SnakeGameState extends State<SnakeGame> {
     if (isGameOver) return;
 
     setState(() {
-      if (nextDirection != null) {
+      if (nextDirection != null && nextDirection != snake.direction) {
         snake.changeDirection(nextDirection!);
         nextDirection = null;
       }
@@ -72,16 +70,18 @@ class _SnakeGameState extends State<SnakeGame> {
     });
   }
 
-  void _handleInput(RawKeyEvent event) {
-    if (event is RawKeyDownEvent) {
-      final key = event.logicalKey;
-      if (key == LogicalKeyboardKey.arrowUp) {
+  void _handleSwipe(Direction direction) {
+    if (!isGameOver) {
+      if (direction == Direction.up && snake.direction != Direction.down) {
         nextDirection = Direction.up;
-      } else if (key == LogicalKeyboardKey.arrowDown) {
+      } else if (direction == Direction.down &&
+          snake.direction != Direction.up) {
         nextDirection = Direction.down;
-      } else if (key == LogicalKeyboardKey.arrowLeft) {
+      } else if (direction == Direction.left &&
+          snake.direction != Direction.right) {
         nextDirection = Direction.left;
-      } else if (key == LogicalKeyboardKey.arrowRight) {
+      } else if (direction == Direction.right &&
+          snake.direction != Direction.left) {
         nextDirection = Direction.right;
       }
     }
@@ -90,68 +90,75 @@ class _SnakeGameState extends State<SnakeGame> {
   @override
   void dispose() {
     timer.cancel();
-    _focusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return RawKeyboardListener(
-      focusNode: _focusNode,
-      onKey: _handleInput,
-      child: GestureDetector(
-        onTap: () {
-          if (isGameOver) {
-            _startGame();
-          } else {
-            _focusNode.requestFocus();
-          }
-        },
-        child: Scaffold(
-          body: Stack(
-            children: [
-              Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                  ),
-                  child: CustomPaint(
-                    painter: GamePainter(
-                      snake: snake,
-                      food: food,
-                      grid: grid,
-                      isGameOver: isGameOver,
-                      score: score,
-                    ),
+    return GestureDetector(
+      onTap: () {
+        if (isGameOver) {
+          _startGame();
+        }
+      },
+      onVerticalDragUpdate: (details) {
+        if (details.delta.dy < 0) {
+          _handleSwipe(Direction.up);
+        } else {
+          _handleSwipe(Direction.down);
+        }
+      },
+      onHorizontalDragUpdate: (details) {
+        if (details.delta.dx < 0) {
+          _handleSwipe(Direction.left);
+        } else {
+          _handleSwipe(Direction.right);
+        }
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                ),
+                child: CustomPaint(
+                  painter: GamePainter(
+                    snake: snake,
+                    food: food,
+                    grid: grid,
+                    isGameOver: isGameOver,
+                    score: score,
                   ),
                 ),
               ),
-              Positioned(
-                top: 20,
-                left: 20,
+            ),
+            Positioned(
+              top: 20,
+              left: 20,
+              child: Text(
+                'Score: $score',
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            if (isGameOver)
+              const Center(
                 child: Text(
-                  'Score: $score',
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
+                  'Game Over\nTap to restart',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              if (isGameOver)
-                const Center(
-                  child: Text(
-                    'Game Over\nTap to restart',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-            ],
-          ),
+          ],
         ),
       ),
     );
