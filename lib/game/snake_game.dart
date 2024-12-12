@@ -22,6 +22,7 @@ class _SnakeGameState extends State<SnakeGame> {
   bool isGameOver = false;
   int score = 0;
   Direction? nextDirection;
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -89,58 +90,68 @@ class _SnakeGameState extends State<SnakeGame> {
   @override
   void dispose() {
     timer.cancel();
+    _focusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return RawKeyboardListener(
-      focusNode: FocusNode(),
+      focusNode: _focusNode,
       onKey: _handleInput,
-      child: Scaffold(
-        body: Stack(
-          children: [
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                ),
-                child: CustomPaint(
-                  painter: GamePainter(
-                    snake: snake,
-                    food: food,
-                    grid: grid,
-                    isGameOver: isGameOver,
-                    score: score,
+      child: GestureDetector(
+        onTap: () {
+          if (isGameOver) {
+            _startGame();
+          } else {
+            _focusNode.requestFocus();
+          }
+        },
+        child: Scaffold(
+          body: Stack(
+            children: [
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                  ),
+                  child: CustomPaint(
+                    painter: GamePainter(
+                      snake: snake,
+                      food: food,
+                      grid: grid,
+                      isGameOver: isGameOver,
+                      score: score,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              top: 20,
-              left: 20,
-              child: Text(
-                'Score: $score',
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            if (isGameOver)
-              const Center(
+              Positioned(
+                top: 20,
+                left: 20,
                 child: Text(
-                  'Game Over\nTap to restart',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 30,
+                  'Score: $score',
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-          ],
+              if (isGameOver)
+                const Center(
+                  child: Text(
+                    'Game Over\nTap to restart',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
