@@ -11,7 +11,7 @@ class Snake {
 
   Snake({required this.grid})
       : _body = [Point(grid.cols ~/ 2, grid.rows ~/ 2)],
-        _direction = Direction.right;
+        _direction = Direction.down;
 
   List<Point<int>> get body => _body;
   Direction get direction => _direction;
