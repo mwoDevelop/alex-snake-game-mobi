@@ -71,6 +71,7 @@ class _SnakeGameState extends State<SnakeGame> {
   }
 
   void _handleSwipe(Direction direction) {
+    print('Swipe direction: $direction');
     if (!isGameOver) {
       if (direction == Direction.up && snake.direction != Direction.down) {
         nextDirection = Direction.up;
@@ -102,6 +103,7 @@ class _SnakeGameState extends State<SnakeGame> {
         }
       },
       onVerticalDragUpdate: (details) {
+        print('Vertical drag: ${details.delta.dy}');
         if (details.delta.dy < 0) {
           _handleSwipe(Direction.up);
         } else {
@@ -109,6 +111,7 @@ class _SnakeGameState extends State<SnakeGame> {
         }
       },
       onHorizontalDragUpdate: (details) {
+        print('Horizontal drag: ${details.delta.dx}');
         if (details.delta.dx < 0) {
           _handleSwipe(Direction.left);
         } else {
