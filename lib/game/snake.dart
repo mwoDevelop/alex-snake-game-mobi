@@ -5,7 +5,7 @@ import 'package:alex_snake_flutter/game/grid.dart';
 import 'dart:math';
 
 class Snake {
-  List<Point<int>> _body;
+  final List<Point<int>> _body;
   Direction _direction;
   final Grid grid;
 
@@ -101,7 +101,7 @@ class Snake {
 
     // Rysowanie krawędzi ekranu
     final edgePaint = Paint()
-      ..color = Color(0xFF000000) // Czarny kolor krawędzi
+      ..color = const Color(0xFF000000) // Czarny kolor krawędzi
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0; // Grubość linii krawędzi
 

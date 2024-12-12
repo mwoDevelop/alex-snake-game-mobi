@@ -1,4 +1,4 @@
-import 'dart:async';
+import 'dart:async' show Timer;
 
 import 'package:alex_snake_flutter/game/enums.dart';
 import 'package:alex_snake_flutter/game/food.dart';
@@ -21,6 +21,7 @@ class _SnakeGameState extends State<SnakeGame> {
   late Grid grid;
   bool isGameOver = false;
   int score = 0;
+  Direction? nextDirection;
 
   @override
   void initState() {
@@ -45,6 +46,10 @@ class _SnakeGameState extends State<SnakeGame> {
     if (isGameOver) return;
 
     setState(() {
+      if (nextDirection != null) {
+        snake.changeDirection(nextDirection!);
+        nextDirection = null;
+      }
       snake.move();
       if (snake.checkCollision()) {
         _gameOver();
@@ -69,17 +74,15 @@ class _SnakeGameState extends State<SnakeGame> {
   void _handleInput(RawKeyEvent event) {
     if (event is RawKeyDownEvent) {
       final key = event.logicalKey;
-      setState(() {
-        if (key == LogicalKeyboardKey.arrowUp) {
-          snake.changeDirection(Direction.up);
-        } else if (key == LogicalKeyboardKey.arrowDown) {
-          snake.changeDirection(Direction.down);
-        } else if (key == LogicalKeyboardKey.arrowLeft) {
-          snake.changeDirection(Direction.left);
-        } else if (key == LogicalKeyboardKey.arrowRight) {
-          snake.changeDirection(Direction.right);
-        }
-      });
+      if (key == LogicalKeyboardKey.arrowUp) {
+        nextDirection = Direction.up;
+      } else if (key == LogicalKeyboardKey.arrowDown) {
+        nextDirection = Direction.down;
+      } else if (key == LogicalKeyboardKey.arrowLeft) {
+        nextDirection = Direction.left;
+      } else if (key == LogicalKeyboardKey.arrowRight) {
+        nextDirection = Direction.right;
+      }
     }
   }
 
@@ -126,11 +129,11 @@ class _SnakeGameState extends State<SnakeGame> {
               ),
             ),
             if (isGameOver)
-              Center(
+              const Center(
                 child: Text(
                   'Game Over\nTap to restart',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.red,
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
