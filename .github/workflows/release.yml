@@ -31,7 +31,6 @@ jobs:
         with:
           files: |
             build/web/**/*
-            build/web/canvaskit/**/*
           draft: false
           prerelease: false
         env:
