@@ -94,8 +94,6 @@ class _SnakeGameState extends State<SnakeGame> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-  
-    // Obliczamy wymiary planszy
     final gameWidth = grid.cols * grid.tileSize.toDouble();
     final gameHeight = grid.rows * grid.tileSize.toDouble();
 
@@ -120,22 +118,78 @@ class _SnakeGameState extends State<SnakeGame> {
         }
       },
       child: Scaffold(
-        body: Center(
-          child: Container(
-            width: gameWidth,
-            height: gameHeight,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black, width: 2.0),
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFFB3E5FC),
+                Color(0xFF81D4FA),
+              ],
             ),
-            child: CustomPaint(
-              painter: GamePainter(
-                snake: snake,
-                food: food,
-                grid: grid,
-                isGameOver: isGameOver,
-                score: score,
+          ),
+          child: Stack(
+            children: [
+              Center(
+                child: Container(
+                  width: gameWidth,
+                  height: gameHeight,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.9),
+                    border: Border.all(color: Colors.black, width: 2.0),
+                  ),
+                  child: CustomPaint(
+                    painter: GamePainter(
+                      snake: snake,
+                      food: food,
+                      grid: grid,
+                      isGameOver: isGameOver,
+                      score: score,
+                    ),
+                  ),
+                ),
               ),
-            ),
+              Positioned(
+                top: 40,
+                left: 20,
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.8),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    'Score: $score',
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              if (isGameOver)
+                Center(
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.9),
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(color: Colors.red, width: 2),
+                    ),
+                    child: const Text(
+                      'Game Over\nTap to restart',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
         ),
       ),
