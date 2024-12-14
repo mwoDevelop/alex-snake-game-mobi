@@ -91,9 +91,14 @@ class _SnakeGameState extends State<SnakeGame> {
     timer.cancel();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+  
+    // Obliczamy wymiary planszy
+    final gameWidth = grid.cols * grid.tileSize.toDouble();
+    final gameHeight = grid.rows * grid.tileSize.toDouble();
+
     return GestureDetector(
       onTap: () {
         if (isGameOver) {
@@ -115,55 +120,28 @@ class _SnakeGameState extends State<SnakeGame> {
         }
       },
       child: Scaffold(
-        body: Stack(
-          children: [
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                ),
-                child: CustomPaint(
-                  painter: GamePainter(
-                    snake: snake,
-                    food: food,
-                    grid: grid,
-                    isGameOver: isGameOver,
-                    score: score,
-                  ),
-                ),
+        body: Center(
+          child: Container(
+            width: gameWidth,
+            height: gameHeight,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black, width: 2.0),
+            ),
+            child: CustomPaint(
+              painter: GamePainter(
+                snake: snake,
+                food: food,
+                grid: grid,
+                isGameOver: isGameOver,
+                score: score,
               ),
             ),
-            Positioned(
-              top: 20,
-              left: 20,
-              child: Text(
-                'Score: $score',
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            if (isGameOver)
-              const Center(
-                child: Text(
-                  'Game Over\nTap to restart',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
-
 class GamePainter extends CustomPainter {
   final Snake snake;
   final Food food;
