@@ -24,15 +24,29 @@ class _SnakeGameState extends State<SnakeGame> {
   @override
   void initState() {
     super.initState();
-    // Dostosowanie wymiarów do proporcji 16:9
-    grid = Grid(rows: 32, cols: 18, tileSize: 20);
+    _setupGrid();
     snake = Snake(grid: grid);
     food = Food(grid: grid);
     _startGame();
   }
+
+  void _setupGrid() {
+    final screenSize = MediaQuery.of(context).size;
+    final isLandscape = screenSize.width > screenSize.height;
+    final gameWidth = isLandscape ? screenSize.width * 0.9 : screenSize.width * 0.8;
+    final gameHeight = isLandscape ? gameWidth / 16 * 9 : gameWidth / 9 * 16;
+    final tileSize = gameWidth / 18;
+    grid = Grid(
+      rows: (gameHeight / tileSize).floor(),
+      cols: 18,
+      tileSize: tileSize,
+    );
+  }
+
   void _startGame() {
     isGameOver = false;
     score = 0;
+    _setupGrid();
     snake = Snake(grid: grid);
     food = Food(grid: grid);
     timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
