@@ -35,6 +35,17 @@ class Snake {
         break;
     }
 
+    // Obsługa przechodzenia przez ściany
+    if (newHead.x < 0) {
+      newHead = Point(grid.cols - 1, newHead.y);
+    } else if (newHead.x >= grid.cols) {
+      newHead = Point(0, newHead.y);
+    } else if (newHead.y < 0) {
+      newHead = Point(newHead.x, grid.rows - 1);
+    } else if (newHead.y >= grid.rows) {
+      newHead = Point(newHead.x, 0);
+    }
+
     _body.insert(0, newHead);
     _body.removeLast();
   }
@@ -71,11 +82,6 @@ class Snake {
   }
 
   bool checkCollision() {
-    // Sprawdź kolizję ze ścianami
-    if (body.first.x < 0 || body.first.x >= grid.cols || body.first.y < 0 || body.first.y >= grid.rows) {
-      return true;
-    }
-
     // Sprawdź kolizję z własnym ciałem
     for (int i = 1; i < body.length; i++) {
       if (body.first == body[i]) {
