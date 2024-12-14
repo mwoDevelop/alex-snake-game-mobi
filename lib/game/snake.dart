@@ -98,19 +98,5 @@ class Snake {
         paint,
       );
     }
-
-    // Rysowanie krawędzi ekranu
-    final edgePaint = Paint()
-      ..color = const Color(0xFF000000) // Czarny kolor krawędzi
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0; // Grubość linii krawędzi
-
-    final double width = grid.cols * grid.tileSize.toDouble();
-    final double height = grid.rows * grid.tileSize.toDouble();
-
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, width, height),
-      edgePaint,
-    );
   }
 }

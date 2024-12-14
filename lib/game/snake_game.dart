@@ -21,16 +21,15 @@ class _SnakeGameState extends State<SnakeGame> {
   bool isGameOver = false;
   int score = 0;
   Direction? nextDirection;
-
   @override
   void initState() {
     super.initState();
-    grid = Grid(rows: 45, cols: 30, tileSize: 15);
+    // Dostosowanie wymiarów do proporcji 16:9
+    grid = Grid(rows: 32, cols: 18, tileSize: 20);
     snake = Snake(grid: grid);
     food = Food(grid: grid);
     _startGame();
   }
-
   void _startGame() {
     isGameOver = false;
     score = 0;
@@ -179,16 +178,31 @@ class GamePainter extends CustomPainter {
     required this.isGameOver,
     required this.score,
   });
-
   @override
   void paint(Canvas canvas, Size size) {
     final snakePaint = Paint()..color = Colors.green;
     final foodPaint = Paint()..color = Colors.red;
+  
+    // Dodajemy rysowanie grubej ramki
+    final borderPaint = Paint()
+      ..color = Colors.black
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4.0;  // Grubsza ramka
+    
+    // Rysujemy ramkę
+    canvas.drawRect(
+      Rect.fromLTWH(
+        0, 
+        0, 
+        grid.cols * grid.tileSize.toDouble(),
+        grid.rows * grid.tileSize.toDouble()
+      ),
+      borderPaint,
+    );
 
     snake.draw(canvas, snakePaint);
     food.draw(canvas, foodPaint);
   }
-
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
