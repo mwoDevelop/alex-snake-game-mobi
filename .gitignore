@@ -12,6 +12,10 @@ migrate_working_dir/
 macos/
 ios/
 linux/
+android/
+mobi/
+windows/
+lib/
 
 # IntelliJ related
 *.iml
