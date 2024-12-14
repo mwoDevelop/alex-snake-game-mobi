@@ -23,14 +23,8 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
       
-      - name: Build Web
-        run: flutter build web
-      
-      - name: Zip Web Build
-        run: |
-          cd build/web
-          zip -r ../../web-build.zip .
-          cd ../..
+      - name: Build Android APK
+        run: flutter build apk --release
       
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -40,10 +34,10 @@ jobs:
             Release ${{ github.ref_name }} of Alex Snake Game
             
             This release contains:
-            - Web build of the game
+            - Android APK build of the game
             - Performance improvements
             - Bug fixes
-          files: web-build.zip
+          files: build/app/outputs/apk/release/app-release.apk
           draft: false
           prerelease: false
         env:
