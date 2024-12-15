@@ -145,7 +145,6 @@ class _SnakeGameState extends State<SnakeGame> {
   }
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
     final gameWidth = grid.cols * grid.tileSize.toDouble();
     final gameHeight = grid.rows * grid.tileSize.toDouble();
 
