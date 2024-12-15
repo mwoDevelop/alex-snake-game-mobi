@@ -93,15 +93,14 @@ class _SnakeGameState extends State<SnakeGame> {
         snake = Snake(grid: grid, initialPosition: Point(grid.cols ~/ 2, grid.rows ~/ 2));
       }
 
-      if (snake.body.first == food.position) {
-        snake.grow();
-        food.generateNewFood();
-        score++;
-      }
       if (userSnake.body.first == food.position) {
         userSnake.grow();
         food.generateNewFood();
         score++;
+      }
+      if (snake.body.first == food.position) {
+        snake.grow();
+        food.generateNewFood();
       }
     });
   }
