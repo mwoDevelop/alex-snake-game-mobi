@@ -6,7 +6,7 @@ import 'package:alex_snake_flutter/game/food.dart';
 import 'package:alex_snake_flutter/game/grid.dart';
 import 'package:alex_snake_flutter/game/snake.dart';
 import 'package:flutter/material.dart';
-import '../snake_bot.dart'; // Import SnakeBot
+import 'package:alex_snake_flutter/snake_bot.dart'; // Import SnakeBot
 
 class SnakeGame extends StatefulWidget {
   const SnakeGame({super.key});
