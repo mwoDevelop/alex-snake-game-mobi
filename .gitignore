@@ -15,7 +15,6 @@ linux/
 android/
 mobi/
 windows/
-lib/
 
 # IntelliJ related
 *.iml
