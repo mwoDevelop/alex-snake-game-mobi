@@ -26,6 +26,7 @@ class _SnakeGameState extends State<SnakeGame> {
   Direction? nextDirection;
   late SnakeBot snakeBot; // Dodanie instancji SnakeBot
   Direction? userNextDirection;
+  int foodCount = 100; // Dodanie zmiennej foodCount
 
   @override
   void initState() {
@@ -41,6 +42,7 @@ class _SnakeGameState extends State<SnakeGame> {
   void _startGame() {
     isGameOver = false;
     score = 0;
+    foodCount = 100; // Reset food count
     snake = Snake(grid: grid);
     userSnake = Snake(grid: grid, initialPosition: Point(grid.cols - 2, grid.rows - 2));
     food = Food(grid: grid);
@@ -96,11 +98,16 @@ class _SnakeGameState extends State<SnakeGame> {
       if (userSnake.body.first == food.position) {
         userSnake.grow();
         food.generateNewFood();
+        foodCount--;
         score++;
       }
       if (snake.body.first == food.position) {
         snake.grow();
         food.generateNewFood();
+        foodCount--;      }
+      
+      if (foodCount <= 0) {
+        _gameOver(); // Koniec gry, gdy foodCount <= 0
       }
     });
   }
@@ -204,7 +211,7 @@ class _SnakeGameState extends State<SnakeGame> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
-                    'Score: $score',
+                    'Score: $score   Food: $foodCount', // Wyświetlanie foodCount
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: 24,
