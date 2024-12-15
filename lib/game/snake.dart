@@ -81,10 +81,10 @@ class Snake {
     _direction = newDirection;
   }
 
-  bool checkCollision() {
+  bool checkCollision(List<Point<int>> otherBody) {
     // Sprawdź kolizję z własnym ciałem
-    for (int i = 1; i < body.length; i++) {
-      if (body.first == body[i]) {
+    for (int i = 0; i < otherBody.length; i++) {
+      if (body.first == otherBody[i]) {
         return true;
       }
     }

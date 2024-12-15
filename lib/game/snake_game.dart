@@ -85,9 +85,12 @@ class _SnakeGameState extends State<SnakeGame> {
       }
       userSnake.move();
 
-      if (snake.checkCollision() || userSnake.checkCollision()) {
+      if (userSnake.checkCollision(snake.body)) {
         _gameOver();
         return;
+      }
+      if (snake.checkCollision(userSnake.body)) {
+        snake = Snake(grid: grid, initialPosition: Point(grid.cols ~/ 2, grid.rows ~/ 2));
       }
 
       if (snake.body.first == food.position) {
