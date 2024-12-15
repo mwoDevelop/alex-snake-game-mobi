@@ -9,8 +9,8 @@ class Snake {
   Direction _direction;
   final Grid grid;
 
-  Snake({required this.grid})
-      : _body = [Point(grid.cols ~/ 2, grid.rows ~/ 2)],
+  Snake({required this.grid, Point<int>? initialPosition})
+      : _body = [initialPosition ?? Point(grid.cols ~/ 2, grid.rows ~/ 2)],
         _direction = Direction.down;
 
   List<Point<int>> get body => _body;

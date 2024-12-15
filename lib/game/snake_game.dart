@@ -1,4 +1,5 @@
 import 'dart:async' show Timer;
+import 'dart:math';
 
 import 'package:alex_snake_flutter/game/enums.dart';
 import 'package:alex_snake_flutter/game/food.dart';
@@ -16,13 +17,15 @@ class SnakeGame extends StatefulWidget {
 
 class _SnakeGameState extends State<SnakeGame> {
   late Timer timer;
-  late Snake snake;
+  late Snake snake; // Snake controlled by bot
+  late Snake userSnake; // Snake controlled by user
   late Food food;
   late Grid grid;
   bool isGameOver = false;
   int score = 0;
   Direction? nextDirection;
   late SnakeBot snakeBot; // Dodanie instancji SnakeBot
+  Direction? userNextDirection;
 
   @override
   void initState() {
@@ -30,6 +33,7 @@ class _SnakeGameState extends State<SnakeGame> {
     // Dostosowanie wymiarów do proporcji 16:9
     grid = Grid(rows: 32, cols: 18, tileSize: 20);
     snake = Snake(grid: grid);
+    userSnake = Snake(grid: grid, initialPosition: Point(grid.cols - 2, grid.rows - 2));
     food = Food(grid: grid);
     snakeBot = SnakeBot(); // Inicjalizacja SnakeBot
     _startGame();
@@ -38,6 +42,7 @@ class _SnakeGameState extends State<SnakeGame> {
     isGameOver = false;
     score = 0;
     snake = Snake(grid: grid);
+    userSnake = Snake(grid: grid, initialPosition: Point(grid.cols - 2, grid.rows - 2));
     food = Food(grid: grid);
     timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
       _gameLoop();
@@ -73,13 +78,25 @@ class _SnakeGameState extends State<SnakeGame> {
         nextDirection = null;
       }
       snake.move();
-      if (snake.checkCollision()) {
+
+      if (userNextDirection != null && userNextDirection != userSnake.direction) {
+        userSnake.changeDirection(userNextDirection!);
+        userNextDirection = null;
+      }
+      userSnake.move();
+
+      if (snake.checkCollision() || userSnake.checkCollision()) {
         _gameOver();
         return;
       }
 
       if (snake.body.first == food.position) {
         snake.grow();
+        food.generateNewFood();
+        score++;
+      }
+      if (userSnake.body.first == food.position) {
+        userSnake.grow();
         food.generateNewFood();
         score++;
       }
@@ -95,17 +112,17 @@ class _SnakeGameState extends State<SnakeGame> {
 
   void _handleSwipe(Direction direction) {
     if (!isGameOver) {
-      if (direction == Direction.up && snake.direction != Direction.down) {
-        nextDirection = Direction.up;
+      if (direction == Direction.up && userSnake.direction != Direction.down) {
+        userNextDirection = Direction.up;
       } else if (direction == Direction.down &&
-          snake.direction != Direction.up) {
-        nextDirection = Direction.down;
+          userSnake.direction != Direction.up) {
+        userNextDirection = Direction.down;
       } else if (direction == Direction.left &&
-          snake.direction != Direction.right) {
-        nextDirection = Direction.left;
+          userSnake.direction != Direction.right) {
+        userNextDirection = Direction.left;
       } else if (direction == Direction.right &&
-          snake.direction != Direction.left) {
-        nextDirection = Direction.right;
+          userSnake.direction != Direction.left) {
+        userNextDirection = Direction.right;
       }
     }
   }
@@ -166,6 +183,7 @@ class _SnakeGameState extends State<SnakeGame> {
                   child: CustomPaint(
                     painter: GamePainter(
                       snake: snake,
+                      userSnake: userSnake,
                       food: food,
                       grid: grid,
                       isGameOver: isGameOver,
@@ -222,6 +240,7 @@ class _SnakeGameState extends State<SnakeGame> {
 }
 class GamePainter extends CustomPainter {
   final Snake snake;
+  final Snake userSnake;
   final Food food;
   final Grid grid;
   final bool isGameOver;
@@ -229,6 +248,7 @@ class GamePainter extends CustomPainter {
 
   GamePainter({
     required this.snake,
+    required this.userSnake,
     required this.food,
     required this.grid,
     required this.isGameOver,
@@ -237,6 +257,7 @@ class GamePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final snakePaint = Paint()..color = Colors.green;
+    final userSnakePaint = Paint()..color = Colors.blue;
     final foodPaint = Paint()..color = Colors.red;
   
     // Dodajemy rysowanie grubej ramki
@@ -257,6 +278,7 @@ class GamePainter extends CustomPainter {
     );
 
     snake.draw(canvas, snakePaint);
+    userSnake.draw(canvas, userSnakePaint);
     food.draw(canvas, foodPaint);
   }
   @override
