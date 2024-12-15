@@ -8,6 +8,8 @@ import 'package:alex_snake_flutter/game/snake.dart';
 import 'package:flutter/material.dart';
 import 'package:alex_snake_flutter/game/snake_bot.dart'; // Import SnakeBot
 
+const int initialFoodCount = 100;
+
 class SnakeGame extends StatefulWidget {
   const SnakeGame({super.key});
 
@@ -26,7 +28,7 @@ class _SnakeGameState extends State<SnakeGame> {
   Direction? nextDirection;
   late SnakeBot snakeBot; // Dodanie instancji SnakeBot
   Direction? userNextDirection;
-  int foodCount = 100; // Dodanie zmiennej foodCount
+  int foodCount = initialFoodCount; // Zmiana na użycie stałej
 
   @override
   void initState() {
@@ -42,7 +44,7 @@ class _SnakeGameState extends State<SnakeGame> {
   void _startGame() {
     isGameOver = false;
     score = 0;
-    foodCount = 100; // Reset food count
+    foodCount = initialFoodCount; // Zmiana na użycie stałej
     snake = Snake(grid: grid);
     userSnake = Snake(grid: grid, initialPosition: Point(grid.cols - 2, grid.rows - 2));
     food = Food(grid: grid);
