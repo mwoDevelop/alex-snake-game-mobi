@@ -5,6 +5,7 @@ import 'package:alex_snake_flutter/game/food.dart';
 import 'package:alex_snake_flutter/game/grid.dart';
 import 'package:alex_snake_flutter/game/snake.dart';
 import 'package:flutter/material.dart';
+import '../snake_bot.dart'; // Import SnakeBot
 
 class SnakeGame extends StatefulWidget {
   const SnakeGame({super.key});
@@ -21,6 +22,8 @@ class _SnakeGameState extends State<SnakeGame> {
   bool isGameOver = false;
   int score = 0;
   Direction? nextDirection;
+  late SnakeBot snakeBot; // Dodanie instancji SnakeBot
+
   @override
   void initState() {
     super.initState();
@@ -28,6 +31,7 @@ class _SnakeGameState extends State<SnakeGame> {
     grid = Grid(rows: 32, cols: 18, tileSize: 20);
     snake = Snake(grid: grid);
     food = Food(grid: grid);
+    snakeBot = SnakeBot(); // Inicjalizacja SnakeBot
     _startGame();
   }
   void _startGame() {
@@ -44,6 +48,26 @@ class _SnakeGameState extends State<SnakeGame> {
     if (isGameOver) return;
 
     setState(() {
+      // Logika bota
+      Direction botDirection = snakeBot.getNextDirection(
+        snake.body.first,
+        food.position,
+        snake.body,
+      );
+      
+      // Sprawdź czy kierunek bota jest dozwolony (nie może zawrócić)
+      bool isValidDirection = true;
+      if ((botDirection == Direction.up && snake.direction == Direction.down) ||
+          (botDirection == Direction.down && snake.direction == Direction.up) ||
+          (botDirection == Direction.left && snake.direction == Direction.right) ||
+          (botDirection == Direction.right && snake.direction == Direction.left)) {
+        isValidDirection = false;
+      }
+
+      if (isValidDirection) {
+        nextDirection = botDirection;
+      }
+
       if (nextDirection != null && nextDirection != snake.direction) {
         snake.changeDirection(nextDirection!);
         nextDirection = null;
