@@ -187,8 +187,7 @@ class _SnakeGameState extends State<SnakeGame> {
                   width: gameWidth,
                   height: gameHeight,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    border: Border.all(color: Colors.black, width: 2.0),
+                    color: Colors.white.withAlpha(230),                    border: Border.all(color: Colors.black, width: 2.0),
                   ),
                   child: CustomPaint(
                     painter: GamePainter(
@@ -208,9 +207,8 @@ class _SnakeGameState extends State<SnakeGame> {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.8),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                    color: Colors.white.withAlpha(230),
+                    borderRadius: BorderRadius.circular(10),                  ),
                   child: Text(
                     'Score: $score   Food: $foodCount', // Wyświetlanie foodCount
                     style: const TextStyle(
@@ -226,9 +224,8 @@ class _SnakeGameState extends State<SnakeGame> {
                   child: Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(color: Colors.red, width: 2),
+                      color: Colors.white.withAlpha(230),
+                      borderRadius: BorderRadius.circular(15),                      border: Border.all(color: Colors.red, width: 2),
                     ),
                     child: const Text(
                       'Game Over\nTap to restart',
