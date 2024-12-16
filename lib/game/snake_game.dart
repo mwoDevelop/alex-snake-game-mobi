@@ -117,6 +117,9 @@ class _SnakeGameState extends State<SnakeGame> {
 
   void _gameOver() {
     timer.cancel();
+    if (userSnake.body.length >= 2) {
+      foodCount++;
+    }
     if (score > 0) {
       highScores.add(score);
       highScores.sort((a, b) => b.compareTo(a)); // Sortuj malejąco
