@@ -16,6 +16,7 @@ class SnakeGame extends StatefulWidget {
   @override
   State<SnakeGame> createState() => _SnakeGameState();
 }
+android/app/src/main/res/mipmap
 
 class _SnakeGameState extends State<SnakeGame> {
   late Timer timer;
