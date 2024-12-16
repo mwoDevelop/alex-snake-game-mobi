@@ -92,17 +92,56 @@ class Snake {
     return false;
   }
   void draw(Canvas canvas, Paint paint) {
-    // Rysowanie ciała węża
-    for (final segment in _body) {
-      canvas.drawRect(
-        Rect.fromLTWH(
-          segment.x * grid.tileSize.toDouble(),
-          segment.y * grid.tileSize.toDouble(),
-          grid.tileSize.toDouble(),
-          grid.tileSize.toDouble(),
-        ),
-        paint,
+    for (int i = 0; i < _body.length; i++) {
+      final segment = _body[i];
+      final isHead = i == 0;
+      final segmentRect = Rect.fromLTWH(
+        segment.x * grid.tileSize.toDouble(),
+        segment.y * grid.tileSize.toDouble(),
+        grid.tileSize.toDouble(),
+        grid.tileSize.toDouble(),
       );
+
+      if (isHead) {
+        // Rysowanie głowy węża
+        canvas.drawRect(segmentRect, paint);
+
+        // Rysowanie oczu
+        final eyeSize = grid.tileSize / 5;
+        final eyeOffset = grid.tileSize / 4;
+        canvas.drawOval(
+          Rect.fromCenter(
+            center: Offset(segmentRect.center.dx - eyeOffset, segmentRect.center.dy - eyeOffset),
+            width: eyeSize,
+            height: eyeSize,
+          ),
+          Paint()..color = Color(0xFF000000),
+        );
+        canvas.drawOval(
+          Rect.fromCenter(
+            center: Offset(segmentRect.center.dx + eyeOffset, segmentRect.center.dy - eyeOffset),
+            width: eyeSize,
+            height: eyeSize,
+          ),
+          Paint()..color = Color(0xFF000000),
+        );
+
+        // Rysowanie języka
+        final tongueWidth = grid.tileSize / 4;
+        final tongueHeight = grid.tileSize / 3;
+        final tongueOffset = grid.tileSize / 2;
+        final tonguePath = Path();
+        tonguePath.moveTo(segmentRect.center.dx, segmentRect.center.dy + tongueOffset);
+        tonguePath.lineTo(segmentRect.center.dx - tongueWidth / 2, segmentRect.center.dy + tongueOffset + tongueHeight);
+        tonguePath.lineTo(segmentRect.center.dx + tongueWidth / 2, segmentRect.center.dy + tongueOffset + tongueHeight);
+        tonguePath.close();
+        canvas.drawPath(tonguePath, Paint()..color = Color(0xFFff0000));
+
+
+      } else {
+        // Rysowanie reszty ciała
+        canvas.drawRect(segmentRect, paint);
+      }
     }
   }
 }
