@@ -53,12 +53,19 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
     snake = Snake(grid: grid);
     userSnake = Snake(grid: grid, initialPosition: Point(grid.cols - 2, grid.rows - 2));
     food = Food(grid: grid);
-    _animationController.reset();
-    _animationController.addStatusListener((status) {
+    
+    // Tworzymy nowy AnimationController z tą samą prędkością
+    _animationController.dispose();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 16),
+    );
+    
+    _animationController.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) {
         _gameLoop();
         _animationController.reset();
-        _animationController.forward(); // Dodane ponowne uruchomienie animacji
+        _animationController.forward();
       }
     });
     _animationController.forward();

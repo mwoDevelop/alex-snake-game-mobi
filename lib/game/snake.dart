@@ -9,7 +9,7 @@ class Snake {
   Direction _direction;
   final Grid grid;
   double _progress = 0.0;
-  double _speed = 0.2; // Dodana prędkość węża
+  final double _speed = 0.15; // Dodana prędkość węża
 
   Snake({required this.grid, Point<int>? initialPosition})
       : _body = [initialPosition ?? Point(grid.cols ~/ 2, grid.rows ~/ 2)],
