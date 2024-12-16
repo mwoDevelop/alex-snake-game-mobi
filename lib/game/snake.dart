@@ -137,6 +137,24 @@ class Snake {
         tonguePath.close();
         canvas.drawPath(tonguePath, Paint()..color = Color(0xFFff0000));
 
+        // Rysowanie uszu
+        final earWidth = grid.tileSize / 4;
+        final earHeight = grid.tileSize / 3;
+        final earOffset = grid.tileSize / 2;
+        final leftEarPath = Path();
+        leftEarPath.moveTo(segmentRect.center.dx - earOffset, segmentRect.center.dy - earOffset);
+        leftEarPath.lineTo(segmentRect.center.dx - earOffset - earWidth, segmentRect.center.dy - earOffset - earHeight);
+        leftEarPath.lineTo(segmentRect.center.dx - earOffset - earWidth / 2, segmentRect.center.dy - earOffset);
+        leftEarPath.close();
+        canvas.drawPath(leftEarPath, Paint()..color = Color(0xFF000000));
+
+        final rightEarPath = Path();
+        rightEarPath.moveTo(segmentRect.center.dx + earOffset, segmentRect.center.dy - earOffset);
+        rightEarPath.lineTo(segmentRect.center.dx + earOffset + earWidth, segmentRect.center.dy - earOffset - earHeight);
+        rightEarPath.lineTo(segmentRect.center.dx + earOffset + earWidth / 2, segmentRect.center.dy - earOffset);
+        rightEarPath.close();
+        canvas.drawPath(rightEarPath, Paint()..color = Color(0xFF000000));
+
 
       } else {
         // Rysowanie reszty ciała
