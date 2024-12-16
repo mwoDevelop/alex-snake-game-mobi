@@ -29,6 +29,7 @@ class _SnakeGameState extends State<SnakeGame> {
   late SnakeBot snakeBot; // Dodanie instancji SnakeBot
   Direction? userNextDirection;
   int foodCount = initialFoodCount; // Zmiana na użycie stałej
+  List<int> highScores = []; // Lista wyników
 
   @override
   void initState() {
@@ -116,6 +117,13 @@ class _SnakeGameState extends State<SnakeGame> {
 
   void _gameOver() {
     timer.cancel();
+    if (score > 0) {
+      highScores.add(score);
+      highScores.sort((a, b) => b.compareTo(a)); // Sortuj malejąco
+      if (highScores.length > 5) {
+        highScores.removeLast(); // Zachowaj tylko 5 najlepszych wyników
+      }
+    }
     setState(() {
       isGameOver = true;
     });
@@ -227,15 +235,44 @@ class _SnakeGameState extends State<SnakeGame> {
                       color: Colors.white.withAlpha(230),
                       borderRadius: BorderRadius.circular(15),                      border: Border.all(color: Colors.red, width: 2),
                     ),
-                    child: const Text(
-                      'Game Over\nTap to restart',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: highScores.isEmpty
+                        ? const Text(
+                            'Game Over\nTap to restart',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        : Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'High Scores',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              for (var highScore in highScores)
+                                Text(
+                                  highScore.toString(),
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 24,
+                                  ),
+                                ),
+                              const Text(
+                                'Tap to restart',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
                   ),
                 ),
             ],
