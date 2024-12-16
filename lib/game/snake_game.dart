@@ -95,6 +95,9 @@ class _SnakeGameState extends State<SnakeGame> {
         return;
       }
       if (snake.checkCollision(userSnake.body)) {
+        if (snake.body.length >= 2) {
+          foodCount++;
+        }
         snake = Snake(grid: grid, initialPosition: Point(grid.cols ~/ 2, grid.rows ~/ 2));
       }
 
