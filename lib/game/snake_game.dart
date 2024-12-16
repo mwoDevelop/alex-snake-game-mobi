@@ -49,7 +49,7 @@ class _SnakeGameState extends State<SnakeGame> {
     snake = Snake(grid: grid);
     userSnake = Snake(grid: grid, initialPosition: Point(grid.cols - 2, grid.rows - 2));
     food = Food(grid: grid);
-    timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
+    timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
       _gameLoop();
     });
   }

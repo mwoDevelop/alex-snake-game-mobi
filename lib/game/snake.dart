@@ -8,6 +8,7 @@ class Snake {
   final List<Point<int>> _body;
   Direction _direction;
   final Grid grid;
+  double _progress = 0.0;
 
   Snake({required this.grid, Point<int>? initialPosition})
       : _body = [initialPosition ?? Point(grid.cols ~/ 2, grid.rows ~/ 2)],
