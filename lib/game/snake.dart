@@ -17,6 +17,7 @@ class Snake {
 
   List<Point<int>> get body => _body;
   Direction get direction => _direction;
+  double get progress => _progress;
 
   void move() {
     final head = _body.first;
