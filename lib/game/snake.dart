@@ -9,6 +9,7 @@ class Snake {
   Direction _direction;
   final Grid grid;
   double _progress = 0.0;
+  double _speed = 0.2; // Dodana prędkość węża
 
   Snake({required this.grid, Point<int>? initialPosition})
       : _body = [initialPosition ?? Point(grid.cols ~/ 2, grid.rows ~/ 2)],
@@ -47,6 +48,7 @@ class Snake {
       newHead = Point(newHead.x, 0);
     }
 
+    _progress = 0.0;
     _body.insert(0, newHead);
     _body.removeLast();
   }
@@ -70,6 +72,7 @@ class Snake {
         break;
     }
 
+    _progress = 0.0;
     _body.insert(0, newHead);
   }
 
@@ -92,13 +95,46 @@ class Snake {
 
     return false;
   }
+
+  void updateProgress(double delta) {
+    _progress += delta * _speed;
+    if (_progress > 1.0) _progress = 1.0;
+  }
+
   void draw(Canvas canvas, Paint paint) {
     for (int i = 0; i < _body.length; i++) {
       final segment = _body[i];
       final isHead = i == 0;
+      final prevSegment = i > 0 ? _body[i-1] : segment;
+      double x, y;
+
+      if (isHead) {
+        switch (_direction) {
+          case Direction.up:
+            x = segment.x * grid.tileSize.toDouble();
+            y = segment.y * grid.tileSize.toDouble() + (grid.tileSize * (1 - _progress));
+            break;
+          case Direction.down:
+            x = segment.x * grid.tileSize.toDouble();
+            y = segment.y * grid.tileSize.toDouble() - (grid.tileSize * (1 - _progress));
+            break;
+          case Direction.left:
+            x = segment.x * grid.tileSize.toDouble() + (grid.tileSize * (1 - _progress));
+            y = segment.y * grid.tileSize.toDouble();
+            break;
+          case Direction.right:
+            x = segment.x * grid.tileSize.toDouble() - (grid.tileSize * (1 - _progress));
+            y = segment.y * grid.tileSize.toDouble();
+            break;
+        }
+      } else {
+        x = segment.x * grid.tileSize.toDouble();
+        y = segment.y * grid.tileSize.toDouble();
+      }
+
       final segmentRect = Rect.fromLTWH(
-        segment.x * grid.tileSize.toDouble(),
-        segment.y * grid.tileSize.toDouble(),
+        x,
+        y,
         grid.tileSize.toDouble(),
         grid.tileSize.toDouble(),
       );
