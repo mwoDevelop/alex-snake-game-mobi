@@ -58,6 +58,7 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
       if (status == AnimationStatus.completed) {
         _gameLoop();
         _animationController.reset();
+        _animationController.forward(); // Dodane ponowne uruchomienie animacji
       }
     });
     _animationController.forward();
