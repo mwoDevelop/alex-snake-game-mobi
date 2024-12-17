@@ -279,6 +279,16 @@ class _GamePainter extends CustomPainter {
     final userSnakePaint = Paint()..color = const Color(0xFF0000FF);
     final foodPaint = Paint()..color = const Color(0xFFFF0000);
 
+    // Draw border around the game board
+    final borderPaint = Paint()
+      ..color = Colors.black
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0;
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, size.width, size.height),
+      borderPaint,
+    );
+
     snake.draw(canvas, snakePaint);
     userSnake.draw(canvas, userSnakePaint);
     food.draw(canvas, foodPaint);
