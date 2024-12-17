@@ -232,7 +232,12 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
                 style: const TextStyle(fontSize: 20, color: Colors.black),
               ),
             ),
-            SizedBox(
+            Container(
+              color: const Color(0xFFF0E68C), // Add background color
+              margin: EdgeInsets.symmetric(
+                horizontal: (MediaQuery.of(context).size.width - gameWidth) / 2,
+                vertical: (MediaQuery.of(context).size.height - gameHeight) / 2 - 50,
+              ),
               width: gameWidth,
               height: gameHeight,
               child: CustomPaint(
