@@ -214,20 +214,38 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
         }
       },
       child: Scaffold(
-        body: SizedBox(
-          width: gameWidth,
-          height: gameHeight,
-          child: CustomPaint(
-            painter: _GamePainter(
-              snake: snake,
-              userSnake: userSnake,
-              food: food,
-              grid: grid,
-              isGameOver: isGameOver,
-              score: score,
-              highScores: highScores,
+        body: Stack(
+          children: [
+            Positioned(
+              top: 10,
+              left: 10,
+              child: Text(
+                'Score: $score',
+                style: const TextStyle(fontSize: 20, color: Colors.black),
+              ),
             ),
-          ),
+            Positioned(
+              top: 30,
+              left: 10,
+              child: Text(
+                'Food: $foodCount',
+                style: const TextStyle(fontSize: 20, color: Colors.black),
+              ),
+            ),
+            SizedBox(
+              width: gameWidth,
+              height: gameHeight,
+              child: CustomPaint(
+                painter: _GamePainter(
+                  snake: snake,
+                  userSnake: userSnake,
+                  food: food,
+                  grid: grid,
+                  isGameOver: isGameOver,
+                ),
+              ),
+            ),
+          ],
         ),
         floatingActionButton: isGameOver
             ? FloatingActionButton(
@@ -246,8 +264,6 @@ class _GamePainter extends CustomPainter {
   final Food food;
   final Grid grid;
   final bool isGameOver;
-  final int score;
-  final List<int> highScores;
 
   _GamePainter({
     required this.snake,
@@ -255,8 +271,6 @@ class _GamePainter extends CustomPainter {
     required this.food,
     required this.grid,
     required this.isGameOver,
-    required this.score,
-    required this.highScores,
   });
 
   @override
@@ -268,7 +282,6 @@ class _GamePainter extends CustomPainter {
     snake.draw(canvas, snakePaint);
     userSnake.draw(canvas, userSnakePaint);
     food.draw(canvas, foodPaint);
-
     if (isGameOver) {
       _drawGameOverScreen(canvas, size);
     }
@@ -289,33 +302,6 @@ class _GamePainter extends CustomPainter {
       (size.height - gameOverTextPainter.height) / 2 - 30,
     );
     gameOverTextPainter.paint(canvas, gameOverTextPosition);
-
-    final scoreTextPainter = TextPainter(
-      text: TextSpan(text: 'Score: $score', style: textStyle),
-      textDirection: TextDirection.ltr,
-    );
-    scoreTextPainter.layout();
-    final scoreTextPosition = Offset(
-      (size.width - scoreTextPainter.width) / 2,
-      (size.height - scoreTextPainter.height) / 2,
-    );
-    scoreTextPainter.paint(canvas, scoreTextPosition);
-
-    if (highScores.isNotEmpty) {
-      final highScoresTextPainter = TextPainter(
-        text: TextSpan(
-          text: 'High Scores: ${highScores.join(', ')}',
-          style: textStyle,
-        ),
-        textDirection: TextDirection.ltr,
-      );
-      highScoresTextPainter.layout();
-      final highScoresTextPosition = Offset(
-        (size.width - highScoresTextPainter.width) / 2,
-        (size.height - highScoresTextPainter.height) / 2 + 30,
-      );
-      highScoresTextPainter.paint(canvas, highScoresTextPosition);
-    }
   }
 
   @override
