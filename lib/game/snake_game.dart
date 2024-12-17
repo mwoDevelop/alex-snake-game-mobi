@@ -39,7 +39,6 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
       duration: const Duration(milliseconds: 16),
     );
     snakeBot = SnakeBot();
-    _startGame();
   }
 
   @override
@@ -55,11 +54,12 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
     snake = Snake(grid: grid);
     userSnake = Snake(grid: grid, initialPosition: Point(grid.cols - 2, grid.rows - 2));
     food = Food(grid: grid);
+    _startGame();
   }
   void _startGame() {
     isGameOver = false;
     score = 0;
-    foodCount = initialFoodCount; // Zmiana na użycie stałej
+    foodCount = initialFoodCount;
     snake = Snake(grid: grid);
     userSnake = Snake(grid: grid, initialPosition: Point(grid.cols - 2, grid.rows - 2));
     food = Food(grid: grid);
