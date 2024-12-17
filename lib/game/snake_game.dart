@@ -44,10 +44,12 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Calculate grid dimensions based on screen size
+    // Calculate grid dimensions based on screen size and device pixel ratio
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final tileSize = 20.0; // Base tile size
+    final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+    final baseTileSize = 20.0;
+    final tileSize = baseTileSize / devicePixelRatio;
     final cols = (screenWidth / tileSize).floor();
     final rows = (screenHeight / tileSize).floor() - 4; // Adjusted rows to fit score and food
     grid = Grid(rows: rows, cols: cols, tileSize: tileSize);
@@ -56,6 +58,7 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
     food = Food(grid: grid);
     _startGame();
   }
+
   void _startGame() {
     isGameOver = false;
     score = 0;
@@ -193,6 +196,7 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
     _animationController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final gameWidth = grid.cols * grid.tileSize.toDouble();
@@ -229,6 +233,7 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
               width: gameWidth,
               height: gameHeight,
               child: CustomPaint(
+                size: Size(gameWidth, gameHeight),
                 painter: _GamePainter(
                   snake: snake,
                   userSnake: userSnake,
