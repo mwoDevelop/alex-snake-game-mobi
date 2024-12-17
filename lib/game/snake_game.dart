@@ -34,6 +34,17 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 16),
+    );
+    snakeBot = SnakeBot();
+    _startGame();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     // Calculate grid dimensions based on screen size
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -44,12 +55,6 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
     snake = Snake(grid: grid);
     userSnake = Snake(grid: grid, initialPosition: Point(grid.cols - 2, grid.rows - 2));
     food = Food(grid: grid);
-    snakeBot = SnakeBot();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 16), // Ustawienie czasu trwania animacji
-    );
-    _startGame();
   }
   void _startGame() {
     isGameOver = false;
