@@ -217,7 +217,7 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
         body: Stack(
           children: [
             Positioned(
-              top: 10,
+              bottom: 10,
               left: 10,
               child: Text(
                 'Score: $score',
@@ -225,7 +225,7 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
               ),
             ),
             Positioned(
-              top: 30,
+              bottom: 30,
               left: 10,
               child: Text(
                 'Food: $foodCount',
