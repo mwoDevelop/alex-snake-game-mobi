@@ -235,8 +235,12 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
             Container(
               color: const Color(0xFFF0E68C), // Add background color
               margin: EdgeInsets.symmetric(
-                horizontal: (MediaQuery.of(context).size.width - gameWidth) / 2,
-                vertical: (MediaQuery.of(context).size.height - gameHeight) / 2 - 50,
+                horizontal:
+                    max(0, (MediaQuery.of(context).size.width - gameWidth) / 2),
+                vertical: max(
+                    0,
+                    (MediaQuery.of(context).size.height - gameHeight) / 2 -
+                        50),
               ),
               width: gameWidth,
               height: gameHeight,
