@@ -216,24 +216,8 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
       child: Scaffold(
         body: Stack(
           children: [
-            Positioned(
-              bottom: 10,
-              left: 10,
-              child: Text(
-                'Score: $score',
-                style: const TextStyle(fontSize: 20, color: Colors.black),
-              ),
-            ),
-            Positioned(
-              bottom: 30,
-              left: 10,
-              child: Text(
-                'Food: $foodCount',
-                style: const TextStyle(fontSize: 20, color: Colors.black),
-              ),
-            ),
             Container(
-              color: const Color(0xFFF0E68C), // Add background color
+              color: const Color(0xFFF0E68C),
               margin: EdgeInsets.symmetric(
                 horizontal:
                     max(0, (MediaQuery.of(context).size.width - gameWidth) / 2),
@@ -254,6 +238,41 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
                 ),
               ),
             ),
+            Positioned(
+              bottom: 10,
+              left: 10,
+              child: Text(
+                'Score: $score',
+                style: const TextStyle(fontSize: 20, color: Colors.black),
+              ),
+            ),
+            Positioned(
+              bottom: 30,
+              left: 10,
+              child: Text(
+                'Food: $foodCount',
+                style: const TextStyle(fontSize: 20, color: Colors.black),
+              ),
+            ),
+            if (isGameOver)
+              Positioned(
+                top: 50,
+                left: 10,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'High Scores:',
+                      style: TextStyle(fontSize: 20, color: Colors.black),
+                    ),
+                    for (var highScore in highScores)
+                      Text(
+                        '$highScore',
+                        style: const TextStyle(fontSize: 18, color: Colors.black),
+                      ),
+                  ],
+                ),
+              ),
           ],
         ),
         floatingActionButton: isGameOver
