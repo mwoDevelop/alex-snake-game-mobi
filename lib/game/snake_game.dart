@@ -34,12 +34,17 @@ class _SnakeGameState extends State<SnakeGame> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    // Dostosowanie wymiarów do proporcji 16:9
-    grid = Grid(rows: 32, cols: 18, tileSize: 20);
+    // Calculate grid dimensions based on screen size
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final tileSize = 20.0; // Base tile size
+    final cols = (screenWidth / tileSize).floor();
+    final rows = (screenHeight / tileSize).floor() - 4; // Adjusted rows to fit score and food
+    grid = Grid(rows: rows, cols: cols, tileSize: tileSize);
     snake = Snake(grid: grid);
     userSnake = Snake(grid: grid, initialPosition: Point(grid.cols - 2, grid.rows - 2));
     food = Food(grid: grid);
-    snakeBot = SnakeBot(); // Inicjalizacja SnakeBot
+    snakeBot = SnakeBot();
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 16), // Ustawienie czasu trwania animacji
