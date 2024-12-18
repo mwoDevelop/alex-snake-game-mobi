@@ -115,7 +115,7 @@ class Snake {
             width: eyeSize,
             height: eyeSize,
           ),
-          Paint()..color = Color(0xFF000000),
+          Paint()..color = const Color(0xFF000000),
         );
         canvas.drawOval(
           Rect.fromCenter(
@@ -123,7 +123,7 @@ class Snake {
             width: eyeSize,
             height: eyeSize,
           ),
-          Paint()..color = Color(0xFF000000),
+          Paint()..color = const Color(0xFF000000),
         );
 
         // Rysowanie języka
@@ -135,7 +135,7 @@ class Snake {
         tonguePath.lineTo(segmentRect.center.dx - tongueWidth / 2, segmentRect.center.dy + tongueOffset + tongueHeight);
         tonguePath.lineTo(segmentRect.center.dx + tongueWidth / 2, segmentRect.center.dy + tongueOffset + tongueHeight);
         tonguePath.close();
-        canvas.drawPath(tonguePath, Paint()..color = Color(0xFFff0000));
+        canvas.drawPath(tonguePath, Paint()..color = const Color(0xFFff0000));
 
         // Rysowanie uszu
         final earWidth = grid.tileSize / 4;
@@ -146,14 +146,14 @@ class Snake {
         leftEarPath.lineTo(segmentRect.center.dx - earOffset - earWidth, segmentRect.center.dy - earOffset - earHeight);
         leftEarPath.lineTo(segmentRect.center.dx - earOffset - earWidth / 2, segmentRect.center.dy - earOffset);
         leftEarPath.close();
-        canvas.drawPath(leftEarPath, Paint()..color = Color(0xFF000000));
+        canvas.drawPath(leftEarPath, Paint()..color = const Color(0xFF000000));
 
         final rightEarPath = Path();
         rightEarPath.moveTo(segmentRect.center.dx + earOffset, segmentRect.center.dy - earOffset);
         rightEarPath.lineTo(segmentRect.center.dx + earOffset + earWidth, segmentRect.center.dy - earOffset - earHeight);
         rightEarPath.lineTo(segmentRect.center.dx + earOffset + earWidth / 2, segmentRect.center.dy - earOffset);
         rightEarPath.close();
-        canvas.drawPath(rightEarPath, Paint()..color = Color(0xFF000000));
+        canvas.drawPath(rightEarPath, Paint()..color = const Color(0xFF000000));
 
 
       } else {

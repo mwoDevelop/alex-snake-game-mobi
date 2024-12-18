@@ -98,7 +98,15 @@ class _SnakeGameState extends State<SnakeGame> {
         if (snake.body.length >= 2) {
           foodCount++;
         }
-        snake = Snake(grid: grid, initialPosition: Point(grid.cols ~/ 2, grid.rows ~/ 2));
+        final random = Random();
+        final corners = [
+          Point(0, 0),
+          Point(grid.cols - 1, 0),
+          Point(0, grid.rows - 1),
+          Point(grid.cols - 1, grid.rows - 1),
+        ];
+        final randomCorner = corners[random.nextInt(corners.length)];
+        snake = Snake(grid: grid, initialPosition: randomCorner);
       }
 
       if (userSnake.body.first == food.position) {
