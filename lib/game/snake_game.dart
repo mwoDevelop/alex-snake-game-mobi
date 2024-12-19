@@ -100,7 +100,7 @@ class _SnakeGameState extends State<SnakeGame> {
         }
         final random = Random();
         final corners = [
-          Point(0, 0),
+          const Point(0, 0),
           Point(grid.cols - 1, 0),
           Point(0, grid.rows - 1),
           Point(grid.cols - 1, grid.rows - 1),
